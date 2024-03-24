@@ -51,7 +51,6 @@ public class Board : MonoBehaviour
     {
         tilemap.ClearAllTiles();
 
-        // Do anything else you want on game over here..
     }
 
     public void Set(Piece piece)
@@ -76,17 +75,14 @@ public class Board : MonoBehaviour
     {
         RectInt bounds = Bounds;
 
-        // The position is only valid if every cell is valid
         for (int i = 0; i < piece.cells.Length; i++)
         {
             Vector3Int tilePosition = piece.cells[i] + position;
 
-            // An out of bounds tile is invalid
             if (!bounds.Contains((Vector2Int)tilePosition)) {
                 return false;
             }
 
-            // A tile already occupies the position, thus invalid
             if (tilemap.HasTile(tilePosition)) {
                 return false;
             }
@@ -100,11 +96,8 @@ public class Board : MonoBehaviour
         RectInt bounds = Bounds;
         int row = bounds.yMin;
 
-        // Clear from bottom to top
         while (row < bounds.yMax)
         {
-            // Only advance to the next row if the current is not cleared
-            // because the tiles above will fall down when a row is cleared
             if (IsLineFull(row)) {
                 LineClear(row);
             } else {
@@ -121,7 +114,6 @@ public class Board : MonoBehaviour
         {
             Vector3Int position = new Vector3Int(col, row, 0);
 
-            // The line is not full if a tile is missing
             if (!tilemap.HasTile(position)) {
                 return false;
             }
@@ -134,14 +126,12 @@ public class Board : MonoBehaviour
     {
         RectInt bounds = Bounds;
 
-        // Clear all tiles in the row
         for (int col = bounds.xMin; col < bounds.xMax; col++)
         {
             Vector3Int position = new Vector3Int(col, row, 0);
             tilemap.SetTile(position, null);
         }
 
-        // Shift every row above down one
         while (row < bounds.yMax)
         {
             for (int col = bounds.xMin; col < bounds.xMax; col++)
